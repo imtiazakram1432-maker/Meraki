@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Merakei Restaurant & Hotel – Government of the Punjab</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#faf6ef;--card:#fff;--ink:#2a1f1a;--mute:#7a6a60;--acc:#b8431f;--acc2:#e8a33d;--line:#eadfce;--ok:#2e7d4f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1512;--card:#271e1a;--ink:#f3e9df;--mute:#b3a396;--acc:#e0673f;--acc2:#e8a33d;--line:#3a2d27;--ok:#5cc08a}}
+:root[data-theme="dark"]{--bg:#1b1512;--card:#271e1a;--ink:#f3e9df;--mute:#b3a396;--acc:#e0673f;--acc2:#e8a33d;--line:#3a2d27;--ok:#5cc08a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4}
+header{background:linear-gradient(135deg,var(--acc),#3981e6);color:#84e0a8; color:#02ec60:28px 16px;text-align:center}
+header h1{margin:0;font-size:1.8rem;letter-spacing:.5px}
+header p{margin:6px 0 0;opacity:.9}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--card);border-bottom:1px solid var(--line);display:flex;justify-content:center;gap:6px;padding:8px}
+nav button,.tabs button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:.9rem}
+nav button.on,.tabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+main{max-width:1150px;margin:0 auto;padding:16px}
+section{display:none}section.on{display:block}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px}
+.tabs button{white-space:nowrap}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.item,.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.item h4{margin:0 0 4px;font-size:1rem}
+.price{font-weight:700;color:var(--acc)}
+.small{font-size:.78rem;color:var(--mute)}
+.item select{width:100%;margin:6px 0}
+.add{width:100%;margin-top:8px;background:var(--acc2);color:#2a1f1a;border:0;padding:8px;border-radius:8px;font-weight:600;cursor:pointer}
+.panel h3{margin:0 0 10px}
+label{display:block;font-size:.85rem;margin:8px 0 3px;color:var(--mute)}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.row{display:flex;justify-content:space-between;gap:8px;padding:4px 0;font-size:.92rem}
+.row.total{font-weight:700;font-size:1.05rem;border-top:2px solid var(--line);margin-top:6px;padding-top:8px}
+.cartline{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+.qty button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.btn{display:block;width:100%;margin-top:12px;background:var(--acc);color:#fff;border:0;padding:12px;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.room{cursor:pointer;text-align:center}
+.room.sel{outline:3px solid var(--acc)}
+.room .em{font-size:2.2rem}
+#toasts{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;left:12px;max-width:380px;margin-left:auto;z-index:99;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--ok);color:#fff;padding:12px 14px;border-radius:10px;box-shadow:0 4px 14px #0004;animation:in .3s}
+@keyframes in{from{transform:translateY(-20px);opacity:0}}
+#modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:90;padding:16px}
+#modal.on{display:flex}
+#modal .box{background:var(--card);border-radius:14px;padding:20px;max-width:420px;width:100%;max-height:85vh;overflow:auto}
+#empty{color:var(--mute);text-align:center;padding:14px}
+@media (max-width:820px){
+ .layout{grid-template-columns:1fr}
+ header h1{font-size:1.4rem}
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .two{grid-template-columns:1fr}
+ nav button{padding:7px 10px;font-size:.82rem}
+}
+@media (max-width:420px){.grid{grid-template-columns:1fr}main{padding:10px}}
+</style>
+</head>
+<body>
+<div id="toasts"></div>
+<header><h1>🍽️ Meraki Restaurant & Hotel</h1><p>A Project of the Government of the Punjab, Pakistan</p><p style=" color: rgb(237, 240, 241); font-style: oblique; font-size: 2rem;">This Website create by Muhammad Imtiaz</p><p style="font-size:.85rem;opacity:.8">Authentic Pakistani cuisine · Fast food · Chinese · Rooms & Suites</p></header>
+<nav>
+ <button class="on" data-s="menu">Menu & Order</button>
+ <button data-s="rooms">Room Reservation</button>
+ <button data-s="cust">Customer Info</button>
+</nav>
+<main>
+<section id="menu" class="on">
+ <div class="tabs" id="tabs"></div>
+ <div class="layout">
+  <div class="grid" id="grid"></div>
+  <div class="panel" id="cartBox">
+   <h3>🛒 Your Order</h3>
+   <div id="cart"></div>
+   <div id="sums"></div>
+   <button class="btn" id="confirmOrder">Confirm Order</button>
+   <p class="small">Prices shown exclude tax. GST 18% + Sales Tax 6% are added at checkout. Customer details come from the Customer Info tab.</p>
+  </div>
+ </div>
+</section>
+
+<section id="rooms">
+ <div class="rooms" id="roomList"></div>
+ <div class="panel" style="max-width:560px">
+  <h3>🏨 Book a Room</h3>
+  <div class="two">
+   <div><label>Check-in</label><input type="date" id="cin"></div>
+   <div><label>Check-out</label><input type="date" id="cout"></div>
+   <div><label>Guests</label><input type="number" id="guests" min="1" max="8" value="2"></div>
+   <div><label>Rooms</label><input type="number" id="nrooms" min="1" max="5" value="1"></div>
+  </div>
+  <label>Special requests</label><textarea id="req" rows="2" placeholder="Late check-in, extra bed, etc."></textarea>
+  <div id="roomSums" style="margin-top:10px"></div>
+  <button class="btn" id="confirmRoom">Confirm Reservation</button>
+ </div>
+</section>
+
+<section id="cust">
+ <div class="panel" style="max-width:560px">
+  <h3>👤 Customer Information</h3>
+  <p class="small">Used for both food orders and room reservations.</p>
+  <label>Full name *</label><input id="cName" autocomplete="name">
+  <div class="two">
+   <div><label>Phone *</label><input id="cPhone" type="tel" placeholder="03xx-xxxxxxx"></div>
+   <div><label>Email</label><input id="cEmail" type="email"></div>
+   <div><label>CNIC / ID</label><input id="cId"></div>
+   <div><label>Order type</label><select id="cType"><option>Dine-in</option><option>Takeaway</option><option>Home delivery</option></select></div>
+  </div>
+  <label>Address / Table number</label><textarea id="cAddr" rows="2"></textarea>
+  <label>Notes</label><textarea id="cNote" rows="2"></textarea>
+  <button class="btn" id="saveCust">Save Information</button>
+ </div>
+</section>
+</main>
+
+<footer style="text-align:center;padding:18px 12px;color:var(--mute);font-size:.85rem">© Meraki Restaurant & Hotel · This Website create by Muhammad Imtiaz at GTTI College Lahore, Pakistan</footer>
+<div id="modal"><div class="box" id="mbox"></div></div>
+
+<script>
+const GST=0.18, ST=0.06;
+const rs=n=>"Rs "+Math.round(n).toLocaleString("en-PK");
+const L=s=>s.split(";").map(x=>{const[a,b]=x.split("|");return{n:a.trim(),p:+b}});
+const MENU={
+"Pakistani":L("Chicken Biryani|450;Beef Biryani|480;Chicken Karahi|1200;Mutton Karahi|2200;Nihari|650;Haleem|400;Paya|550;Chicken Handi|1100;Seekh Kebab|500;Chicken Tikka|450;Chapli Kebab|400;Daal Mash|350;Aloo Gosht|600;Palak Paneer|500;Butter Chicken|900;Chana Masala|350;Sajji|1800;Chicken Pulao|400;Reshmi Kebab|550;Garlic Naan|80"),
+"Fast Food":L("Zinger Burger|550;Beef Burger|600;Cheese Burger|650;Club Sandwich|500;Chicken Shawarma|350;Fajita Pizza|1100;Tikka Pizza|1200;Pepperoni Pizza|1300;French Fries|250;Chicken Nuggets|450;Hot Wings|500;Loaded Fries|450;Hot Dog|400;Pasta Alfredo|750;Crispy Chicken Wrap|480"),
+"Chinese":L("Chicken Chowmein|650;Egg Fried Rice|500;Veg Fried Rice|450;Chicken Manchurian|900;Chilli Chicken|950;Hot & Sour Soup|400;Chicken Corn Soup|380;Spring Rolls|450;Sweet & Sour Chicken|950;Kung Pao Chicken|1000"),
+"Beverages":[["Coca-Cola",90,120,230],["Sprite",90,120,230],["Coke Zero",100,130,250],["Next Cola",70,95,190],["Fanta",90,120,230],["7UP",90,120,230]].map(a=>({n:a[0],sizes:{"350 ml":a[1],"500 ml":a[2],"1500 ml":a[3]}})),
+"Hot Drinks":L("Espresso|250;Cappuccino|400;Latte|450;Americano|300;Mocha|480;Doodh Patti Chai|150;Kashmiri Chai|250;Green Tea|150;Hot Chocolate|420;Karak Chai|180"),
+"Cold Drinks":L("Iced Coffee|400;Iced Latte|450;Mint Margarita|300;Lemonade|200;Strawberry Shake|380;Mango Shake|350;Banana Shake|330;Chocolate Shake|400;Oreo Shake|450;Sweet Lassi|250;Salty Lassi|220;Rooh Afza|200;Falooda Drink|350;Cold Coffee|420;Iced Tea|300;Watermelon Juice|280;Orange Juice|320;Pomegranate Juice|380;Sugarcane Juice|200;Blue Lagoon|350"),
+"Sweets & Desserts":L("Gulab Jamun|250;Kheer|280;Gajar Halwa|350;Ras Malai|320;Kulfi|250;Falooda|400;Brownie with Ice Cream|450;Cheesecake|550;Chocolate Cake Slice|380;Jalebi|300")
+};
+const ROOMS=[["Standard Room","🛏️",8000],["Deluxe Room","🛌",12000],["Executive Room","🏙️",16000],["Family Suite","👨‍👩‍👧",22000],["Presidential Suite","👑",45000]];
+
+const $=id=>document.getElementById(id);
+let cat="Pakistani", cart={}, room=0, cust={};
+
+// Navigation
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));
+ document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===b.dataset.s));
+});
+const go=s=>document.querySelector(`nav button[data-s="${s}"]`).click();
+
+// Toast + browser notification
+function notify(title,msg){
+ const t=document.createElement("div");t.className="toast";t.innerHTML=`<b>${title}</b><br>${msg}`;
+ $("toasts").appendChild(t);setTimeout(()=>t.remove(),7000);
+ try{if("Notification" in window&&Notification.permission==="granted")new Notification(title,{body:msg})}catch(e){}
+}
+try{if("Notification" in window&&Notification.permission==="default")Notification.requestPermission()}catch(e){}
+
+// Menu
+function renderTabs(){
+ $("tabs").innerHTML=Object.keys(MENU).map(c=>`<button class="${c===cat?"on":""}" data-c="${c}">${c} (${MENU[c].length})</button>`).join("");
+ $("tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;renderTabs();renderGrid()});
+}
+function renderGrid(){
+ $("grid").innerHTML=MENU[cat].map((it,i)=>{
+  if(it.sizes){
+   const first=Object.values(it.sizes)[0];
+   return `<div class="item"><h4>${it.n}</h4><select id="sz${i}" onchange="document.getElementById('pp${i}').textContent=this.selectedOptions[0].dataset.p">${Object.entries(it.sizes).map(([s,p])=>`<option value="${s}" data-p="${rs(p)}">${s} – ${rs(p)}</option>`).join("")}</select><div class="price" id="pp${i}">${rs(first)}</div><div class="small">+ 18% GST + 6% Sales Tax</div><button class="add" onclick="addBev(${i})">Add</button></div>`;
+  }
+  return `<div class="item"><h4>${it.n}</h4><div class="price">${rs(it.p)}</div><div class="small">Incl. tax: ${rs(it.p*(1+GST+ST))}</div><button class="add" onclick="add('${cat}',${i})">Add</button></div>`;
+ }).join("");
+}
+function put(key,name,price){cart[key]=cart[key]||{name,price,qty:0};cart[key].qty++;renderCart()}
+function add(c,i){const it=MENU[c][i];put(c+i,it.n,it.p)}
+function addBev(i){const it=MENU.Beverages[i],s=$("sz"+i).value;put("B"+i+s,`${it.n} ${s}`,it.sizes[s])}
+function chg(k,d){cart[k].qty+=d;if(cart[k].qty<=0)delete cart[k];renderCart()}
+function totals(sub){const g=sub*GST,s=sub*ST;return{sub,g,s,tot:sub+g+s}}
+function sumHTML(t){return `<div class="row"><span>Subtotal</span><span>${rs(t.sub)}</span></div><div class="row"><span>GST (18%)</span><span>${rs(t.g)}</span></div><div class="row"><span>Sales Tax (6%)</span><span>${rs(t.s)}</span></div><div class="row total"><span>Total</span><span>${rs(t.tot)}</span></div>`}
+function renderCart(){
+ const ks=Object.keys(cart);
+ $("cart").innerHTML=ks.length?ks.map(k=>`<div class="cartline"><span>${cart[k].name}<br><span class="small">${rs(cart[k].price)}</span></span><span class="qty"><button onclick="chg('${k}',-1)">−</button> ${cart[k].qty} <button onclick="chg('${k}',1)">+</button></span><b>${rs(cart[k].price*cart[k].qty)}</b></div>`).join(""):'<div id="empty">Your cart is empty</div>';
+ $("sums").innerHTML=sumHTML(totals(ks.reduce((a,k)=>a+cart[k].price*cart[k].qty,0)));
+}
+
+// Customer
+function readCust(){
+ cust={name:$("cName").value.trim(),phone:$("cPhone").value.trim(),email:$("cEmail").value.trim(),id:$("cId").value.trim(),type:$("cType").value,addr:$("cAddr").value.trim(),note:$("cNote").value.trim()};
+ return cust;
+}
+function needCust(){
+ readCust();
+ if(!cust.name||!cust.phone){notify("Information needed","Please enter your name and phone in Customer Info.");go("cust");return false}
+ return true;
+}
+$("saveCust").onclick=()=>{if(needCust())notify("Saved ✅","Customer information saved for "+cust.name)};
+
+// Receipt
+function show(html){$("mbox").innerHTML=html+'<button class="btn" onclick="$(\'modal\').classList.remove(\'on\')">Close</button>';$("modal").classList.add("on")}
+const custBlock=()=>`<p class="small"><b>${cust.name}</b> · ${cust.phone}${cust.email?" · "+cust.email:""}<br>${cust.type}${cust.addr?" · "+cust.addr:""}</p>`;
+const uid=p=>p+"-"+Math.floor(1000+Math.random()*9000);
+
+$("confirmOrder").onclick=()=>{
+ const ks=Object.keys(cart);
+ if(!ks.length){notify("Cart empty","Please add items first.");return}
+ if(!needCust())return;
+ const t=totals(ks.reduce((a,k)=>a+cart[k].price*cart[k].qty,0)),id=uid("ORD");
+ show(`<h3>✅ Order Confirmed</h3><p><b>${id}</b> · estimated time 25–35 min</p>${custBlock()}${ks.map(k=>`<div class="row"><span>${cart[k].qty} × ${cart[k].name}</span><span>${rs(cart[k].price*cart[k].qty)}</span></div>`).join("")}${sumHTML(t)}`);
+ notify("Order confirmed ✅",`${id} for ${cust.name}. Total ${rs(t.tot)}. We are preparing your food!`);
+ cart={};renderCart();
+};
+
+// Rooms
+function renderRooms(){
+ $("roomList").innerHTML=ROOMS.map((r,i)=>`<div class="item room ${i===room?"sel":""}" onclick="room=${i};renderRooms();roomSum()"><div class="em">${r[1]}</div><h4>${r[0]}</h4><div class="price">${rs(r[2])} / night</div><div class="small">+ taxes</div></div>`).join("");
+}
+function nights(){const a=new Date($("cin").value),b=new Date($("cout").value);return isNaN(a)||isNaN(b)?0:Math.round((b-a)/864e5)}
+function roomSum(){
+ const n=nights(),q=+$("nrooms").value||1;
+ $("roomSums").innerHTML=n>0?`<div class="row"><span>${ROOMS[room][0]} × ${q} room(s) × ${n} night(s)</span><span></span></div>`+sumHTML(totals(ROOMS[room][2]*q*n)):'<p class="small">Select valid dates to see the price.</p>';
+}
+["cin","cout","nrooms"].forEach(i=>$(i).addEventListener("input",roomSum));
+const today=new Date().toISOString().slice(0,10);$("cin").min=$("cout").min=today;
+$("confirmRoom").onclick=()=>{
+ const n=nights();
+ if(n<=0){notify("Check dates","Check-out must be after check-in.");return}
+ if(!needCust())return;
+ const q=+$("nrooms").value||1,t=totals(ROOMS[room][2]*q*n),id=uid("RSV");
+ show(`<h3>✅ Reservation Confirmed</h3><p><b>${id}</b></p>${custBlock()}<div class="row"><span>${ROOMS[room][0]} × ${q}</span><span>${n} night(s)</span></div><div class="small">${$("cin").value} → ${$("cout").value} · ${$("guests").value} guest(s)${$("req").value?"<br>Request: "+$("req").value:""}</div>${sumHTML(t)}`);
+ notify("Room reserved ✅",`${id}: ${ROOMS[room][0]}, ${n} night(s). Total ${rs(t.tot)}.`);
+};
+
+renderTabs();renderGrid();renderCart();renderRooms();roomSum();
+</script>
+</body>
+</html>
